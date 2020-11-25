@@ -1,23 +1,63 @@
-import logo from './logo.svg';
+
+
+
+// https://stackoverflow.com/questions/64991791/usestate-react-hook
+
+import React, { useState } from "react"
 import './App.css';
 
-function App() {
+function App(props) {
+  const [userData, setUserData] = useState("");
+  const [userOption, setUserOption] = useState("ftoc");
+  const [compValue, setCompValue] = useState("0");
+
+  const handleChange = e => { 
+    setUserData(e.target.value)
+  }
+
+  const handleOption = e => { 
+    console.log(e)
+    setUserOption(e.target.value)
+  }
+
+  const handleClick = e => { 
+    // console.log(userData)
+    // console.log(userOption)
+    // console.log(compValue)
+    switch (userOption) { 
+      case "ftoc":
+        const cel = (userData - 32) / 1.8
+        if (!isNaN(cel)) {
+          setCompValue(cel)
+        } else { 
+          setCompValue("Error")
+        }
+        break 
+      case "ctof":
+        const far = userData * 1.8 + 32
+        if (!isNaN(far)) {
+          setCompValue(far)
+        } else { 
+          setCompValue("Error")
+        }
+        break
+      default:
+        setCompValue("Error")
+
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        Value<input type="text" onChange={ handleChange }/>
+        <select onChange={ handleOption } className="tab">
+          <option value="ftoc">F to C degrees</option>
+          <option value="ctof">C to F degrees</option>
+        </select>
+        <button onClick={handleClick}>Go</button>
+      </div>
+      <h2 className="display">{compValue}</h2>
     </div>
   );
 }
